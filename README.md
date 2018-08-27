@@ -84,3 +84,15 @@ The template only contains two F# source files: the project (.fsproj) and a sour
 ## Where to go from here
 
 Check more [Fable samples](https://github.com/fable-compiler/samples-browser), use another template like `Fable.Template.Elmish.React` or `SAFE.Template`, and check the [awesome-fable](https://github.com/kunjee17/awesome-fable#-awesome-fable) for a curated list of resources provided by the community.
+
+## Actually
+
+* Either: dotnet new -i Fable.Template::*
+Or:     dotnet new -i Fable.Template
+
+* Either: dotnet new fable -n FableApp -lang F#
+Or:     dotnet new fable -lang F#
+
+* npm install (this does 'dotnet restore' as postinstall step)
+* cd tools
+* dotnet fable npm-start
