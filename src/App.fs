@@ -3,17 +3,29 @@ module fsharp_fable_svg_test
 open Fable.Core
 open Fable.Core.JsInterop
 open Fable.Import
+open Fable.Import.Browser
+
+open HtmlUtil
+
+let renderLines () =
+    (s=?"svg") ["width" => 600; "height" => 600]
+        [
+            (s=?"line") [ "x1" => 300; "y1" => 100; "x2" => 300; "y2" => 500; "style" => "stroke:black;stroke-width:1" ] [];
+            (s=?"line") [ "x1" => 100; "y1" => 100; "x2" => 500; "y2" => 500; "style" => "stroke:blue;stroke-width:2" ] [];
+            (s=?"line") [ "x1" => 100; "y1" => 500; "x2" => 500; "y2" => 100; "style" => "stroke:red;stroke-width:5" ] [];
+            (s=?"line") [ "x1" => 100; "y1" => 300; "x2" => 500; "y2" => 300; "style" => "stroke:green;stroke-width:10" ] []
+        ]
+
+let error msg =
+  (h=?"p") [] [
+    (h=?"strong") [] [text "Error: "]
+    text msg
+  ] |> renderTo (document.getElementById("errors"))
 
 let init() =
-    let canvas = Browser.document.getElementsByTagName_canvas().[0]
-    canvas.width <- 1000.
-    canvas.height <- 800.
-    let ctx = canvas.getContext_2d()
-    // The (!^) operator checks and casts a value to an Erased Union type
-    // See http://fable.io/docs/interacting.html#Erase-attribute
-    ctx.fillStyle <- !^"rgb(200,0,0)"
-    ctx.fillRect (10., 10., 55., 50.)
-    ctx.fillStyle <- !^"rgba(0, 0, 200, 0.5)"
-    ctx.fillRect (30., 30., 55., 50.)
+    let output = document.getElementById("output")
+    renderLines() |> renderTo output
+
+    error "Error!"
 
 init()

@@ -1,9 +1,13 @@
 ﻿// From:
 // https://github.com/fable-compiler/samples-browser/blob/master/src/lsystem/Html.fs
+// Modded:
+//  No EventListener constructor
+//  Clashing symbol for El operator
 module HtmlUtil
 
 open Fable.Import.Browser
-open Fable.Core
+//open Fable.Core
+open Fable.Core.JsInterop
 
 type DomAttribute = 
   | Event of (Element -> Event -> unit)
@@ -29,7 +33,8 @@ let rec render node =
         | Property(v) -> 
             if ns = "" then el.setAttribute(k, v)
             else el.setAttributeNS(null, k, v)
-        | Event(f) -> el.addEventListener(k, U2.Case1(EventListener(f el)))
+//        | Event(f) -> el.addEventListener(k, U2.Case1(EventListener(f el)))
+        | Event(f) -> el.addEventListener(k, !^(f el))
       el :> Node
 
 let renderTo (node:HTMLElement) dom = 
@@ -43,9 +48,9 @@ let (=!>) k f = k, Event(f)
 
 type El(ns) = 
   member x.NS = ns
-  static member (?) (el:El, n:string) = fun a b ->
+//  static member (?) (el:El, n:string) = fun a b ->
+  static member (=?) (el:El, n:string) = fun a b ->
     Element(el.NS, n, Array.ofList a, Array.ofList b)
 
 let h = El("")
 let s = El("http://www.w3.org/2000/svg")
-
